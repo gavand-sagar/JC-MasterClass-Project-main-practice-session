@@ -10,13 +10,18 @@
       name="email"
       formControlName="userName"
     />
-    <span
+    <span class="error" *ngIf="LoginForm.get('userName')?.hasError('required')">Required</span>
+    <span class="error" *ngIf="LoginForm.get('userName')?.hasError('minlength')">Min length is 3</span>
+    <span class="error" *ngIf="LoginForm.get('userName')?.hasError('maxlength')">Max length is 10</span>
+    <span class="error" *ngIf="LoginForm.get('userName')?.hasError('shouldNotSagar')">Should not Sagar</span>
+    <!-- <span
       class="error"
       [hidden]="
-        LoginForm.controls.userName.dirty && LoginForm.controls.userName.valid
+        LoginForm.controls.userName.dirty 
+        && LoginForm.controls.userName.valid
       "
       >Please enter valid data</span
-    >
+    > -->
     <br />
 
     <label for="psw"><b>Password</b></label>

@@ -1,14 +1,34 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
+
+
+class MyValidation {
+  static ShouldNotSagar(control: AbstractControl): ValidationErrors | null {
+    console.log("WE ARE IN Validation....");
+    //control.parent // the whole form // 
+    // that means you can access any other value from it
+    if (control.value == "Sagar") {
+      return {
+        shouldNotSagar: true
+      }
+    } else {
+      return {
+        shouldNotSagar: false
+      }
+    }
+
+
+  }
+}
 
 @Injectable()
 export class AuthenticationService {
   $IsValid: Observable<boolean>;
   private IsValidJSubject: BehaviorSubject<boolean>;
-  
+
   constructor(private route: Router, private httpClient: HttpClient) {
     this.IsValidJSubject = new BehaviorSubject<boolean>(true);
     this.$IsValid = this.IsValidJSubject.asObservable();
@@ -16,13 +36,19 @@ export class AuthenticationService {
 
   InitializedForm() {
     return new FormGroup({
-      userName: new FormControl('', [
-        Validators.required,
-        Validators.minLength(3),
-      ]),
+      userName: new FormControl('',
+        [
+          Validators.required,
+          Validators.maxLength(10),
+          Validators.minLength(3),
+          MyValidation.ShouldNotSagar
+        ],
+        [
+
+        ]),
       Password: new FormControl('', [
         Validators.required,
-        Validators.minLength(3),
+        Validators.minLength(3)
       ]),
     });
   }
