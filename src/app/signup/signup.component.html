@@ -1,0 +1,6 @@
+<form [formGroup]="form" style="padding: 20px;background-color: orange;height: 300px;width: 300px;">
+    <input formControlName="userName">
+    <br />
+    <div *ngIf="form.get('userName')?.hasError('required')">Required</div>
+    <div *ngIf="form.get('userName')?.hasError('isAlreadyExists')">Username Already Taken</div>
+</form>

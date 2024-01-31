@@ -1,11 +1,29 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-
+import { BehaviorSubject, Observable, delay, of } from 'rxjs';
 
 class MyValidation {
+
+
+  static AysncShouldNotSagar(): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors> => {
+      console.log("WE ARE IN Validation....");
+      //control.parent // the whole form // 
+      // that means you can access any other value from it
+      if (control.value == "Sagar") {
+        return of({
+          shouldNotSagar: true
+        }).pipe(delay(3000))
+      } else {
+        return of({
+          shouldNotSagar: false
+        }).pipe(delay(3000))
+      }
+    }
+  }
+
   static ShouldNotSagar(control: AbstractControl): ValidationErrors | null {
     console.log("WE ARE IN Validation....");
     //control.parent // the whole form // 
@@ -19,8 +37,6 @@ class MyValidation {
         shouldNotSagar: false
       }
     }
-
-
   }
 }
 
@@ -40,11 +56,7 @@ export class AuthenticationService {
         [
           Validators.required,
           Validators.maxLength(10),
-          Validators.minLength(3),
-          MyValidation.ShouldNotSagar
-        ],
-        [
-
+          Validators.minLength(3)
         ]),
       Password: new FormControl('', [
         Validators.required,
