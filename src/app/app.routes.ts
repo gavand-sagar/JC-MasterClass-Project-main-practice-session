@@ -3,6 +3,7 @@ import { CutomerComponent } from './customer/customer.component';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './guards/auth.guard';
 import { SignupComponent } from './signup/signup.component';
+import { RxJsDemoComponent } from './rx-js-demo/rx-js-demo.component';
 
 export const routes: Routes = [
   {
@@ -17,6 +18,10 @@ export const routes: Routes = [
   {
     path: 'signup',
     component: SignupComponent,
+  },
+  {
+    path: 'rxjs-demo',
+    component: RxJsDemoComponent,
   },
   {
     path: '',
